@@ -5,7 +5,8 @@
 // contactlist.style.transition = "5s";
 // },2000);
 // console.log(links);
-
+let m = document.getElementById("tblGrid");
+console.log(m);
 let button = document.querySelector(".contact-form-send");
 let form = document.querySelector(".contact-form");
 // let contactlist = document.querySelector(".contact-form__list");
@@ -58,14 +59,47 @@ function saveData() {
   });
 }
 
+// ------------------------------------------------------
+// ----------
+// Вывод данных с БД  в виде таблицу
+function getDataFromWebSQL() {
+  db.transaction(function (tx) {
+    tx.executeSql(
+      "SELECT * FROM todo",
+      [],
+      function (tx, result) {
+        let str = "";
+        for (var i = 0; i < result.rows.length; i++) {
+          // const newWindow = window.open("", "_blank");
+          // console.log(result.rows.item(i));
+          str += "<tr>";
+          str += "<td>" + result.rows.item(i).nams + "</td>";
+          str += "<td>" + result.rows.item(i).surname + "</td>";
+          str += "<td>" + result.rows.item(i).email + "</td>";
+          str += "<td>" + result.rows.item(i).topic + "</td>";
+          str += "<td>" + result.rows.item(i).telephone + "</td>";
+          str += "<td>" + result.rows.item(i).comment + "</td>";
+          str += "<td>" + result.rows.item(i).date + "</td>";
+          str += "</tr>";
+          document.getElementById("tblGrid").innerHTML += str;
+          str = "";
+        }
+      },
+      null
+    );
+  });
+}
+// -----------------------------------
+// -------------------
+
 // Очиска формы
 
 // ----------------------------------------
-function clearTable() {
-  db.transaction(function (tx) {
-    tx.executeSql("DELETE FROM todo");
-  });
-}
+// function clearTable() {
+//   db.transaction(function (tx) {
+//     tx.executeSql("DELETE FROM todo");
+//   });
+// }
 // ---------------------
 // -------
 // Отловка клавиатуры
@@ -82,147 +116,16 @@ form.addEventListener("submit", function (e) {
   e.preventDefault();
   if (validateForm() == true) {
     // e.target.reset();
-    clearTable();
-    // document.location = "skills.html";
+    // clearTable();
     saveData();
     alert("Форма заполнена");
-    db.transaction(function (tx) {
-      tx.executeSql(
-        "SELECT * FROM todo",
-        [],
-        function (tx, result) {
-          for (var i = 0; i < result.rows.length; i++) {
-            const newWindow = window.open("", "_blank");
-            newWindow.document.write(
-              "<b>" +
-                "Ваше имя = " +
-                result.rows.item(i)["nams"] +
-                "</b><br />",
-              "<b>" +
-                "Ваше фамилия = " +
-                result.rows.item(i)["surname"] +
-                "</b><br />",
-              "<b>" +
-                "Ваше email = " +
-                result.rows.item(i)["email"] +
-                "</b><br />",
-              "<b>" +
-                "Ваш email = " +
-                result.rows.item(i)["topic"] +
-                "</b><br />",
-              "<b>" +
-                "Ваш телефон = " +
-                result.rows.item(i)["telephone"] +
-                "</b><br />",
-              "<b>" +
-                "Дата заполнения = " +
-                result.rows.item(i)["date"] +
-                "</b><br />",
-              "<b>" + "Ваш = " + result.rows.item(i)["comment"] + "</b><br />"
-            );
-          }
-        },
-        null
-      );
-    });
-    // ---------------------------------------------------
-    // db.transaction(function (tx) {
-    //   tx.executeSql(
-    //     "SELECT * FROM todo",
-    //     [],
-    //     function (tx, results) {
-    //       var len = results.rows.length;
-    //       // Выводим данные в консоль
-    //       for (var i = 0; i < len; i++) {
-    //         console.log(results.rows.item(i));
-    //       }
-    //     },
-    //     null
-    //   );
-    // });
+    // getDataFromWebSQL();
+    let l = document.location;
+    l.href = "AnswerBD.html";
   }
 });
 
-// -----------------------------------------------------------
-// -
-// -
-// Работа с базами данными
-
-// ----------------------------------------------------
-
-// let db = openDatabase("mydb", "1.0", "My Database", 2 * 1024 * 1024);
-// db.transaction(function (tx) {
-//   tx.executeSql("CREATE TABLE IF NOT EXISTS users (id unique, name varchar,)");
-// });
-// db.transaction(function (tx) {
-//   tx.executeSql("INSERT INTO users (id, name, age) VALUES (?, ?, ?)", [
-//     1,
-//     links.value,
-//     30,
-//   ]);
-// });
-// db.transaction(function (tx) {
-//   tx.executeSql("SELECT * FROM users", [], function (tx, result) {
-//     for (var i = 0; i < result.rows.length; i++) {
-//       console.log(result.rows.item(i));
-//     }
-//   });
-// });
-
-// -------
-// button.addEventListener("click", function (e) {
-//   e.preventDefault();
-//   let div1 = document.createElement("div");
-//   div1.className = "activexx";
-//   div1.textContent = "Привет как дела";
-//   console.log(div1);
-//   form.append(div1);
-// });
-
-// a.addEventListener("click", function () {
-//   let valid = true;
-
-//   for (let link of links) {
-//     if (link.value == "") {
-//       alert(`Пожалуйста заполните поле ${link}`);
-//       link.style.border = "1px solid red";
-//       valid = false;
-//     }
-//     return valid;
-//   }
-// });
-
-// -----------------------------
-// --------------
-// ---------
-// ------
-// Работа с базой данной
-// let db = openDatabase("mydatabase", "1.0", "My Database", 2 * 1024 * 1024);
-// if (!db) {
-//   alert("dsdss");
-// }
-
-// db.transaction(function (tx) {
-//   tx.executeSql(
-//     "CREATE TABLE IF NOT EXISTS mytable (id INTEGER PRIMARY KEY, name TEXT, email TEXT)"
-//   );
-// });
-// !name -- если поле пустое то не сработает preventDefault
-// form.addEventListener("submit", function (e) {
-//   let name = document.getElementById("nams").value;
-//   let email = document.getElementById("email").value;
-//   db.transaction(function (tx) {
-//     tx.executeSql("INSERT INTO mytable (name, email) VALUES (?, ?)", [
-//       name,
-//       email,
-//     ]);
-//   });
-//   db.transaction(function (tx) {
-//     tx.executeSql("SELECT * FROM mytable", [], function (tx, results) {
-//       var len = results.rows.length;
-//       for (var i = 0; i < len; i++) {
-//         console.log(results.rows.item(i));
-//       }
-//     });
-//   });
-// });
+// Конец кода
+// -------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------
+// ---------------------------
