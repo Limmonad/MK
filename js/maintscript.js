@@ -1,4 +1,15 @@
 "use strict";
+<<<<<<< HEAD
+=======
+
+// setTimeout(function mk () {
+// contactlist.style.display = "flex";
+// contactlist.style.transition = "5s";
+// },2000);
+// console.log(links);
+let m = document.getElementById("tblGrid");
+console.log(m);
+>>>>>>> e73e4cca2896c560779208fbea3f984d474535a2
 let button = document.querySelector(".contact-form-send");
 let form = document.querySelector(".contact-form");
 let nams = document.getElementById("nams");
@@ -65,8 +76,54 @@ function saveData() {
     );
   });
 }
+<<<<<<< HEAD
 // -----------------------------------
 // -------------------
+=======
+
+// ------------------------------------------------------
+// ----------
+// Вывод данных с БД  в виде таблицу
+function getDataFromWebSQL() {
+  db.transaction(function (tx) {
+    tx.executeSql(
+      "SELECT * FROM todo",
+      [],
+      function (tx, result) {
+        let str = "";
+        for (var i = 0; i < result.rows.length; i++) {
+          // const newWindow = window.open("", "_blank");
+          // console.log(result.rows.item(i));
+          str += "<tr>";
+          str += "<td>" + result.rows.item(i).nams + "</td>";
+          str += "<td>" + result.rows.item(i).surname + "</td>";
+          str += "<td>" + result.rows.item(i).email + "</td>";
+          str += "<td>" + result.rows.item(i).topic + "</td>";
+          str += "<td>" + result.rows.item(i).telephone + "</td>";
+          str += "<td>" + result.rows.item(i).comment + "</td>";
+          str += "<td>" + result.rows.item(i).date + "</td>";
+          str += "</tr>";
+          document.getElementById("tblGrid").innerHTML += str;
+          str = "";
+        }
+      },
+      null
+    );
+  });
+}
+// -----------------------------------
+// -------------------
+
+// Очиска формы
+
+// ----------------------------------------
+// function clearTable() {
+//   db.transaction(function (tx) {
+//     tx.executeSql("DELETE FROM todo");
+//   });
+// }
+// ---------------------
+>>>>>>> e73e4cca2896c560779208fbea3f984d474535a2
 // -------
 // Отловка символов клавиатуры
 // ------------------------
@@ -82,12 +139,24 @@ var url = document.location.href;
 form.addEventListener("submit", function (e) {
   e.preventDefault();
   if (validateForm() == true) {
+<<<<<<< HEAD
     saveData();
     alert("Форма заполнена");
+=======
+    // e.target.reset();
+    // clearTable();
+    saveData();
+    alert("Форма заполнена");
+    // getDataFromWebSQL();
+>>>>>>> e73e4cca2896c560779208fbea3f984d474535a2
     let l = document.location;
     l.href = "AnswerBD.html";
   }
 });
+<<<<<<< HEAD
+=======
+
+>>>>>>> e73e4cca2896c560779208fbea3f984d474535a2
 // Конец кода
 // -------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------
